@@ -162,6 +162,14 @@ jobs:
         run: python3 scripts/validate_sbom.py
 
       # ------------------------------------------------------------------
+      # Zephyr's SBOMs take LVGL's package URL from zephyr/module.yml.
+      # ------------------------------------------------------------------
+      - name: "Check: Zephyr module version is up to date"
+        id: zephyr_module
+        continue-on-error: true
+        run: python3 scripts/check_zephyr_module.py
+
+      # ------------------------------------------------------------------
       # Final gate – fail the job if any generator above is out of date.
       # This gives us full output from every generator before failing.
       # New generators: add a step above and a line here.
@@ -176,7 +184,8 @@ jobs:
           steps.built-in-fonts.outcome       == 'failure' ||
           steps.copyrights.outcome           == 'failure' ||
           steps.sbom.outcome                 == 'failure' ||
-          steps.sbom_schema.outcome          == 'failure'
+          steps.sbom_schema.outcome          == 'failure' ||
+          steps.zephyr_module.outcome        == 'failure'
         run: |
           echo "Code generation results:"
           echo "------------------------"
@@ -199,6 +208,7 @@ jobs:
           print_result "copyrights"           "${{ steps.copyrights.outcome }}"
           print_result "sbom"                 "${{ steps.sbom.outcome }}"
           print_result "sbom_schema"          "${{ steps.sbom_schema.outcome }}"
+          print_result "zephyr_module"        "${{ steps.zephyr_module.outcome }}"
 
           echo "------------------------"
           echo "A generator test failed, or a generated file is out of date. See above for details."

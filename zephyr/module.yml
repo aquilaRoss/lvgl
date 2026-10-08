@@ -3,3 +3,6 @@ name: lvgl
 build:
   cmake-ext: True
   kconfig: zephyr/Kconfig
+security:
+  external-references:
+    - pkg:github/lvgl/lvgl@v9.6.0

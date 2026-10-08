@@ -233,6 +233,7 @@ if __name__ == '__main__':
         targets.extend([
             PrefixReplacer(['library.json'], '"version": "'),
             PrefixReplacer(['library.properties'], 'version='),
+            PrefixReplacer(['zephyr', 'module.yml'], 'pkg:github/lvgl/lvgl@v'),
         ])
 
     for target in targets:
